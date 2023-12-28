@@ -53,14 +53,15 @@ public:
 	UFUNCTION()
 	void NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit);
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gameplay")
-	int32 Score;
-
 	UFUNCTION(BlueprintPure)
 	float GetHealtPercent() const;
 
-	UFUNCTION(BlueprintPure)
-	int GetScore() const;
+
+	UFUNCTION(BlueprintPure, Category = "Game")
+	int32 GetScore() const;
+
+
+	void HandlePlayerDeath();
 
 	float ImmunityDuration = 3;
 	bool bHasPlusPower = false;
@@ -69,6 +70,16 @@ public:
 	FTimerHandle ImmunityTimerHandle;
 
 	UCapsuleComponent* MyCapsuleComponent;
+
+	//Remaining time
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Game")
+    float TimeLimit;
+
+    UPROPERTY(BlueprintReadOnly, Category = "Game")
+    float RemainingTime;
+
+	UFUNCTION(BlueprintPure, Category = "Game")
+	float GetRemainingTime() const;
 
 protected:
 	// APawn interface
@@ -82,7 +93,10 @@ protected:
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
 
-	// void Pause(const FInputActionValue& Value);
+
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Gameplay")
+	int32 Score;
 
 	void DeactivatePlusPower();
 	void ActivateImmunity();
@@ -106,7 +120,8 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Sounds")
 	USoundBase* PacmanDies;
 
-	// UPROPERTY(EditAnywhere)
-	// TSubclassOf<class UUserWidget> PauseScreenClass;
+	FTimerHandle TimerHandle_GameOver;
+
+    void UpdateRemainingTime();
 
 };

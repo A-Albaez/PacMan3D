@@ -35,9 +35,7 @@ private:
 	UPROPERTY(EditAnywhere)
 	UUserWidget *HUD;
 
-
 protected:
 	virtual void BeginPlay() override;
-
 
 };

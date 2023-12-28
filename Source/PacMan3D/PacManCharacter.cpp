@@ -64,6 +64,12 @@ void APacManCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+    TimeLimit = 120.0f; //2 minutes
+    RemainingTime = TimeLimit;
+
+    GetWorldTimerManager().SetTimer(TimerHandle_GameOver, this, &APacManCharacter::UpdateRemainingTime, 1.0f, true);
+
+
 	// Add Input Mapping Context
 	if (APlayerController *PlayerController = Cast<APlayerController>(Controller))
 	{
@@ -92,9 +98,6 @@ void APacManCharacter::SetupPlayerInputComponent(UInputComponent *PlayerInputCom
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APacManCharacter::Look);
 
-		//Pause
-		// EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Triggered, this, &APacManCharacter::Pause);
-
 	}
 	else
 	{
@@ -106,7 +109,6 @@ void APacManCharacter::Move(const FInputActionValue &Value)
 {
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
-
 	if (Controller != nullptr)
 	{
 		// find out which way is forward
@@ -138,25 +140,6 @@ void APacManCharacter::Look(const FInputActionValue &Value)
 	}
 }
 
-// void APacManCharacter::Pause(const FInputActionValue &Value)
-// {
-// 	UUserWidget* PauseScreen = CreateWidget(this, PauseScreenClass);
-
-// 	if (UGameplayStatics::IsGamePaused(GetWorld()))
-// 	{
-// 		UGameplayStatics::SetGamePaused(GetWorld(), false);
-// 	}
-// 	else
-// 	{
-// 		UGameplayStatics::SetGamePaused(GetWorld(), true);
-// 	}
-	
-// 	if(PauseScreen != nullptr)
-// 	{
-// 		PauseScreen->AddToViewport();
-// 	}
-// }
-
 void APacManCharacter::LoseLife()
 {
 	if (Health > 0)
@@ -168,16 +151,7 @@ void APacManCharacter::LoseLife()
 
 	if (Health <= 0)
 	{
-		// AMyGameModeBase *GameMode = GetWorld()->GetAuthGameMode<AMyGameModeBase>();
-
-		if (GameMode != nullptr)
-		{
-			GameMode->PawnKilled(this);
-		}
-
-		DetachFromControllerPendingDestroy();
-		MyCapsuleComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		UGameplayStatics::SpawnSoundAttached(PacmanDies, GetMesh(), TEXT(""));
+		HandlePlayerDeath();
 	}
 }
 
@@ -234,6 +208,7 @@ float APacManCharacter::GetHealtPercent() const
 int APacManCharacter::GetScore() const
 {
 	return Score;
+
 }
 
 void APacManCharacter::DeactivatePlusPower()
@@ -269,16 +244,42 @@ FVector APacManCharacter::FindSafeRespawnLocation()
 	SafeLocations.Add(FVector(4817.0f, 1820.0f, 314.112232f));
 	SafeLocations.Add(FVector(4100.0f, 470.0f, 314.112232f));
 
-	//
 	if (SafeLocations.Num() > 0)
 	{
 		int32 RandomIndex = FMath::RandRange(0, SafeLocations.Num() - 1);
 		return SafeLocations[RandomIndex];
 	}
 
-	// Si no hay ubicaciones seguras, simplemente regresa la posición actual del personaje.
 	return GetActorLocation();
 }
+
+void APacManCharacter::HandlePlayerDeath()
+{
+    if (GameMode != nullptr)
+    {
+        GameMode->PawnKilled(this);
+    }
+
+    DetachFromControllerPendingDestroy();
+    MyCapsuleComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    UGameplayStatics::SpawnSoundAttached(PacmanDies, GetMesh(), TEXT(""));
+}
+
+float APacManCharacter::GetRemainingTime() const
+{
+    return RemainingTime;
+}
+
+void APacManCharacter::UpdateRemainingTime()
+{
+    RemainingTime -= 1.0f;
+
+    if (RemainingTime <= 0.0f)
+    {
+		HandlePlayerDeath();
+    }
+}
+
 
 void APacManCharacter::Tick(float DeltaTime)
 {

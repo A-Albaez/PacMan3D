@@ -35,7 +35,7 @@ void APacManPlayerController::GameHasEnded(AActor *EndGameFocus, bool bIsWinner)
 void APacManPlayerController::BeginPlay() 
 {
     Super::BeginPlay();
-
+    
     HUD = CreateWidget(this, HUDClass);
 
     if(HUD != nullptr)
