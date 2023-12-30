@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "843718867430",
+    "firebase_url": "https://pac-man3d-default-rtdb.firebaseio.com",
+    "project_id": "pac-man3d",
+    "storage_bucket": "pac-man3d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:843718867430:android:4e49647ff68e27b3c67e27",
+        "android_client_info": {
+          "package_name": "com.a_albaez.pacman3d"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "843718867430-115106rrov0ss09a632867b9s47hr46f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIx954E-qv68taPdWVEfV5qpXWAaElnSg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "843718867430-115106rrov0ss09a632867b9s47hr46f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

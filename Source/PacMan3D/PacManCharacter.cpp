@@ -280,7 +280,6 @@ void APacManCharacter::UpdateRemainingTime()
     }
 }
 
-
 void APacManCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
