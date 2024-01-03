@@ -15,7 +15,11 @@ class PACMAN3D_API APacManPlayerController : public APlayerController
 	GENERATED_BODY()
 	
 public:
+	APacManPlayerController();
+
 	virtual void GameHasEnded(class AActor *EndGameFocus = nullptr, bool bIsWinner = false) override;
+
+	void CheckAuthentication();
 
 private:
 	UPROPERTY(EditAnywhere)
@@ -35,7 +39,14 @@ private:
 	UPROPERTY(EditAnywhere)
 	UUserWidget *HUD;
 
+	FTimerHandle TimerHandle_CheckAuthentication;
+
 protected:
 	virtual void BeginPlay() override;
+
+    void EndPlay(const EEndPlayReason::Type EndPlayReason);
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Authentication")
+    class AAuthManagerActor* AuthManager;
 
 };

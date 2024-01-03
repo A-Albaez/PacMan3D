@@ -8,7 +8,7 @@ public class PacMan3D : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] {"EnhancedInput", "Core", "CoreUObject", "Engine", "InputCore", "UMG", "Http","Json"});
+		PublicDependencyModuleNames.AddRange(new string[] {"EnhancedInput", "Core", "CoreUObject", "Engine", "InputCore", "UMG", "Http","Json","JsonUtilities"});
 
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
