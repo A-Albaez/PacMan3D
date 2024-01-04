@@ -22,7 +22,6 @@
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
-// Sets default values
 APacManCharacter::APacManCharacter()
 {
 	Score = 0;
@@ -64,7 +63,7 @@ void APacManCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-    TimeLimit = 120.0f; //2 minutes
+    TimeLimit = 90.0f; //1:30 minutes
     RemainingTime = TimeLimit;
 
     GetWorldTimerManager().SetTimer(TimerHandle_GameOver, this, &APacManCharacter::UpdateRemainingTime, 1.0f, true);
@@ -208,7 +207,6 @@ float APacManCharacter::GetHealtPercent() const
 int APacManCharacter::GetScore() const
 {
 	return Score;
-
 }
 
 void APacManCharacter::DeactivatePlusPower()
@@ -268,6 +266,11 @@ void APacManCharacter::HandlePlayerDeath()
 float APacManCharacter::GetRemainingTime() const
 {
     return RemainingTime;
+}
+
+int APacManCharacter::GetGameTime()const
+{
+	return TimeLimit - RemainingTime;
 }
 
 void APacManCharacter::UpdateRemainingTime()

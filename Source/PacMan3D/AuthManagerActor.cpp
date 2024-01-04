@@ -191,7 +191,6 @@ void AAuthManagerActor::HandleLoginUserResponse(FHttpRequestPtr Request, FHttpRe
             if (JsonObject->HasField("kind") && JsonObject->GetStringField("kind") == "identitytoolkit#VerifyPasswordResponse")
             {
                 // Extrae el ID del usuario de la respuesta JSON y almacénalo
-                CurrentUserId = JsonObject->GetStringField("localId");
                 IdToken = JsonObject->GetStringField("idToken");
 
                 SaveIdToken(IdToken, bLoginSuccess);
@@ -227,8 +226,6 @@ bool AAuthManagerActor::LoginSuccess() const
 
 void AAuthManagerActor::RegisterScore(int32 HighScore, float GameTime)
 {
-    UE_LOG(LogTemp, Warning, TEXT("register score:. Token de autenticación guardado: %s"), *IdToken);
-
     // Verificar si el usuario está autenticado
     if (IdToken.IsEmpty())
     {
@@ -356,6 +353,7 @@ void AAuthManagerActor::HandleGetUserIdResponse(FHttpRequestPtr Request, FHttpRe
                                 {
                                     // Muestra el username en el log
                                     UE_LOG(LogTemp, Log, TEXT("Username del usuario con email %s: %s"), *UserEmail, *UserN);
+                                    CurrentUserId = UserN;
                                 }
                                 else
                                 {

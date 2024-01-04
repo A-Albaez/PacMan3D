@@ -6,9 +6,8 @@
 #include "GameFramework/PlayerController.h"
 #include "PacManPlayerController.generated.h"
 
-/**
- * 
- */
+class APacManCharacter;
+
 UCLASS()
 class PACMAN3D_API APacManPlayerController : public APlayerController
 {
@@ -20,6 +19,12 @@ public:
 	virtual void GameHasEnded(class AActor *EndGameFocus = nullptr, bool bIsWinner = false) override;
 
 	void CheckAuthentication();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game")
+	int32 Score;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game")
+	float Tiempo;
 
 private:
 	UPROPERTY(EditAnywhere)
@@ -48,5 +53,7 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Authentication")
     class AAuthManagerActor* AuthManager;
-
+	
+	UPROPERTY()
+    APacManCharacter* PacmanCharacter;
 };

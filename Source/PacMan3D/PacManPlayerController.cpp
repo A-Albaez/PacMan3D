@@ -4,6 +4,7 @@
 #include "TimerManager.h"
 #include "Blueprint/UserWidget.h"
 #include "AuthManagerActor.h"
+#include "PacManCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
 APacManPlayerController::APacManPlayerController()
@@ -20,12 +21,17 @@ void APacManPlayerController::BeginPlay()
     {
         HUD->AddToViewport();
     }
+
     AuthManager = AAuthManagerActor::GetInstance(); // Usa el Singleton aquí
-
-
     if (AuthManager == nullptr)
     {
         AuthManager = GetWorld()->SpawnActor<AAuthManagerActor>(AAuthManagerActor::StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator);
+    }
+
+    PacmanCharacter = Cast<APacManCharacter>(GetPawn());
+    if (PacmanCharacter == nullptr)
+    {
+        UE_LOG(LogTemp, Error, TEXT("No se pudo obtener una referencia al PacManCharacter desde APacManPlayerController."));
     }
 }
 
@@ -71,10 +77,20 @@ void APacManPlayerController::CheckAuthentication()
 {
     if (AuthManager != nullptr && AuthManager->LoginSuccess())
     {
-        UE_LOG(LogTemp, Warning, TEXT("AuthManager no es nulo y el inicio de sesión fue exitoso. Token de autenticación actual: %s"), *AuthManager->GetIdToken());
+        // Accede a las funciones del PacManCharacter
+        if (PacmanCharacter != nullptr)
+        {
+            Score = PacmanCharacter->GetScore();
+            Tiempo = PacmanCharacter->GetGameTime();
 
-        // Llama a RegisterScore
-        AuthManager->RegisterScore(1, 1.2);
+            // Llama a RegisterScore con los valores obtenidos
+            AuthManager->RegisterScore(Score, Tiempo);
+        }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("PacManCharacter es nulo en APacManPlayerController::CheckAuthentication."));
+        }
+
     }
     else if (AuthManager != nullptr)
     {

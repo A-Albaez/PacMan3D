@@ -59,8 +59,7 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Game")
 	int32 GetScore() const;
-
-
+	
 	void HandlePlayerDeath();
 
 	float ImmunityDuration = 3;
@@ -80,6 +79,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Game")
 	float GetRemainingTime() const;
+
+	UFUNCTION(BlueprintPure, Category = "Game")
+    int GetGameTime() const;
 
 protected:
 	// APawn interface
