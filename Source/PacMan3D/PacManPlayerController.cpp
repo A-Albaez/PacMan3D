@@ -62,11 +62,7 @@ void APacManPlayerController::GameHasEnded(AActor* EndGameFocus, bool bIsWinner)
 
     if (ResultScreen != nullptr)
     {
-        UE_LOG(LogTemp, Error, TEXT("Pantalla final"));
         ResultScreen->AddToViewport();
-
-        // Log detallado para la depuración
-        UE_LOG(LogTemp, Warning, TEXT("AuthManager: %s"), *GetNameSafe(AuthManager));
 
         // Verifica la autenticación después de un retardo
         GetWorldTimerManager().SetTimer(TimerHandle_CheckAuthentication, this, &APacManPlayerController::CheckAuthentication, 1.0f, false);
