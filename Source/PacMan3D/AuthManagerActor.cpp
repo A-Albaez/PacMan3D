@@ -11,10 +11,11 @@ AAuthManagerActor::AAuthManagerActor()
     // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
 
-    ApiKey = TEXT("AIzaSyDIx954E-qv68taPdWVEfV5qpXWAaElnSg");
-    FirebaseSignUpUrl = TEXT("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDIx954E-qv68taPdWVEfV5qpXWAaElnSg");
-    FirebaseLoginUrl = TEXT("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDIx954E-qv68taPdWVEfV5qpXWAaElnSg");
-
+    FString ConfigPath = FPaths::ProjectConfigDir() / TEXT("DefaultGame.ini");
+    ApiKey = GConfig->GetStr(TEXT("API"), TEXT("ApiKey"), *ConfigPath);
+    FirebaseSignUpUrl = GConfig->GetStr(TEXT("API"), TEXT("FirebaseSignUpUrl"), *ConfigPath);
+    FirebaseLoginUrl = GConfig->GetStr(TEXT("API"), TEXT("FirebaseLoginUrl"), *ConfigPath);
+     
     Username = TEXT("");
     UserEmail = TEXT("");
 }
@@ -386,4 +387,11 @@ void AAuthManagerActor::HandleGetUserIdResponse(FHttpRequestPtr Request, FHttpRe
         FString ErrorMessage = (Response.IsValid()) ? Response->GetContentAsString() : TEXT("HTTP Request Failed");
         UE_LOG(LogTemp, Error, TEXT("Error al obtener todos los usuarios. %s"), *ErrorMessage);
     }
+}
+
+FString AAuthManagerActor::GetUsername()
+{
+    UE_LOG(LogTemp, Error, TEXT("usuario: %s"), *CurrentUserId);
+
+    return CurrentUserId;
 }

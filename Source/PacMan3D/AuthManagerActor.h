@@ -20,6 +20,10 @@ public:
     void LoginUser(const FString &InEmail, const FString &InPassword);
 
     FString IdToken;
+    
+    UFUNCTION(BlueprintCallable, Category = "User")
+    FString GetUsername();
+
     FString CurrentUserId;
 
     UFUNCTION(BlueprintCallable, Category = "Firebase")

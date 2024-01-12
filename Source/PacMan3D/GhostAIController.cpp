@@ -6,6 +6,8 @@
 void AGhostAIController::BeginPlay()
 {
     Super::BeginPlay();
+    FVector Patrol (3150.0, 1209.999987, 327.639551);
+
 
     if (AIBehavior != nullptr)
     {
@@ -13,6 +15,8 @@ void AGhostAIController::BeginPlay()
 
         RunBehaviorTree(AIBehavior);
         GetBlackboardComponent()->SetValueAsVector(TEXT("StartLocation"), GetPawn()->GetActorLocation());
+
+        GetBlackboardComponent()->SetValueAsVector(TEXT("PatrolRoute"), Patrol);
 
     }
     
